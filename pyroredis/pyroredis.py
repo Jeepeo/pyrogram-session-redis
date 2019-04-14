@@ -1,6 +1,5 @@
 
 from pyrogram import Client
-from pyrogram.client import Proxy
 from pyrogram.session.auth import Auth
 from pyrogram.api.types import InputPeerUser
 import base64
@@ -42,7 +41,6 @@ class RedisSession(object):
         self.auth_key: Auth = None
         self.test_mode: bool = False
         self.user_id: InputPeerUser = None
-        self.proxy: dict or Proxy = None
         self.redis: Redis = redis_connection
 
         # module-specified props
@@ -68,7 +66,6 @@ class RedisSession(object):
         self.dc_id = self.client.dc_id
         self.user_id = self.client.user_id
         self.test_mode = self.client.test_mode
-        self.proxy = self.client.proxy
         self.auth_key = self.client.auth_key
 
         self.session_name = self.client.session_name
@@ -78,7 +75,6 @@ class RedisSession(object):
         self.client.dc_id = self.dc_id
         self.client.user_id = self.user_id
         self.client.test_mode = self.test_mode
-        self.client.proxy = self.proxy
         self.client.auth_key = self.auth_key
 
     def _get_sessions(self, strip_prefix=False):
@@ -100,7 +96,7 @@ class RedisSession(object):
             s = self._get_sessions()
             if len(s) == 0:
                 self.dc_id = 1
-                self.auth_key = Auth(self.dc_id, self.test_mode, self.proxy).create()
+                self.auth_key = Auth(self.dc_id, self.test_mode).create()
                 self._to_client()
                 return
 

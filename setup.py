@@ -43,6 +43,5 @@ setuptools.setup(
 
     install_requires=[
         "redis>=2.0",
-        "Pyrogram>=0.6"
     ],
 )
